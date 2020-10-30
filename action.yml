@@ -1,13 +1,26 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: "FTP"
+description: "Upload directory through FTP"
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  username:
+    description: "FTP username"
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
+    default: ""
+  password:
+    description: "FTP password"
+    required: true
+    default: ""
+  server:
+    description: "FTP server"
+    required: true
+    default: ""
+  local-directory:
+    description: "directory to upload from"
+    required: true
+    default: "."
+  server-directory:
+    description: "directory to upload to"
+    required: true
+    default: "."
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
