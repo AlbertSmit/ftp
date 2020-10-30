@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const core = require("@actions/core");
 const FtpDeploy = require("ftp-deploy");
 
@@ -19,18 +20,17 @@ async function run() {
     port: 21,
     localRoot: __dirname + localDir,
     remoteRoot: serverDir,
-    // delete ALL existing files at destination before uploading, if true
+    include: ["*", "**/*"],
     deleteRemote: false,
-    // Passive mode is forced (EPSV command is not sent)
     forcePasv: true,
   };
 
   try {
-    core.info(`Setting up FTP.`);
+    core.info(chalk.green("Setting up FTP."));
 
     await ftpDeploy
       .deploy(config)
-      .then((res) => core.info("finished:", res))
+      .then((res) => core.info(chalk.green("finished:", res)))
       .catch((err) => core.setFailed(err));
   } catch (error) {
     core.setFailed(error.message);
