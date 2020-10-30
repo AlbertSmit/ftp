@@ -1,6 +1,9 @@
-const chalk = require("chalk");
 const core = require("@actions/core");
 const FtpDeploy = require("ftp-deploy");
+
+function blue(text) {
+  return `\u001b[38;5;6m${text}`;
+}
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -18,7 +21,7 @@ async function run() {
     password: password,
     host: server,
     port: 21,
-    localRoot: __dirname + localDir,
+    localRoot: localDir,
     remoteRoot: serverDir,
     include: ["*", "**/*"],
     deleteRemote: false,
@@ -26,11 +29,11 @@ async function run() {
   };
 
   try {
-    core.info(chalk.green("Setting up FTP."));
+    core.info(blue("Setting up FTP."));
 
     await ftpDeploy
       .deploy(config)
-      .then((res) => core.info(chalk.green("finished:", res)))
+      .then((res) => core.info(blue("finished:"), res))
       .catch((err) => core.setFailed(err));
   } catch (error) {
     core.setFailed(error.message);

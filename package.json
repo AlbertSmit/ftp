@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/albertsmit/ftp#readme",
   "dependencies": {
-    "@actions/core": "^1.2.5",
-    "chalk": "^4.1.0"
+    "@actions/core": "^1.2.5"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.24.0",
