@@ -1,5 +1,14 @@
+const style = require("ansi-styles");
 const core = require("@actions/core");
 const FtpDeploy = require("ftp-deploy");
+
+function blue(text) {
+  return `${style.green.open}${text}${style.green.close}`;
+}
+
+function red(text) {
+  return `${style.redBright.open}${text}${style.redBright.close}`;
+}
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -13,24 +22,57 @@ async function run() {
 
   var config = {
     user: username,
-    // Password optional, prompted if none given
     password: password,
     host: server,
     port: 21,
-    localRoot: __dirname + localDir,
+    localRoot: localDir,
     remoteRoot: serverDir,
-    // delete ALL existing files at destination before uploading, if true
+    include: ["*", "**/*"],
     deleteRemote: false,
-    // Passive mode is forced (EPSV command is not sent)
     forcePasv: true,
   };
 
+  ftpDeploy.on("uploading", function (data) {
+    core.info(
+      blue(`Uploading ${data.totalFilesCount} / ${data.transferredFileCount}.`)
+    );
+  });
+
+  ftpDeploy.on("uploaded", function (data) {
+    // Throw a random insult. For fun purposes.
+    const random = Math.floor(Math.random * 10);
+    switch (random) {
+      case 1:
+        core.info(red(`${data.filename}? That sounds dumb.`));
+        break;
+      case 2:
+        core.info(
+          red(
+            `${data.filename}, are you kidding me? Is that the best you come up with?`
+          )
+        );
+        break;
+      case 3:
+        core.info(red(`Who names their file ${data.filename}? Hideous!`));
+        break;
+      case 4:
+        core.info(red(`Who still uses FTP? That's ridiculous.`));
+        break;
+
+      default:
+        break;
+    }
+
+    // Show actual information.
+    core.info(blue(`Done uploading ${data.filename}.`));
+  });
+
   try {
-    core.info(`Setting up FTP.`);
+    core.info(blue("Setting up FTP."));
 
     await ftpDeploy
       .deploy(config)
-      .then((res) => core.info("finished:", res))
+      .then(() => core.info(blue("Finished uploading your crap.")))
       .catch((err) => core.setFailed(err));
   } catch (error) {
     core.setFailed(error.message);
