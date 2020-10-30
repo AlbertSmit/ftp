@@ -39,10 +39,7 @@ async function run() {
   });
 
   ftpDeploy.on("uploaded", function (data) {
-    core.info(blue(`Done uploading ${data.filename}.`));
-  });
-
-  ftpDeploy.on("uploaded", function (data) {
+    // Throw a random insult. For fun purposes.
     const random = Math.floor(Math.random * 10);
     switch (random) {
       case 1:
@@ -65,6 +62,9 @@ async function run() {
       default:
         break;
     }
+
+    // Show actual information.
+    core.info(blue(`Done uploading ${data.filename}.`));
   });
 
   try {
