@@ -1,8 +1,13 @@
+const style = require("ansi-styles");
 const core = require("@actions/core");
 const FtpDeploy = require("ftp-deploy");
 
 function blue(text) {
-  return `\u001b[38;5;6m${text}`;
+  return `${style.green.open}${text}${style.green.close}`;
+}
+
+function red(text) {
+  return `${style.redBright.open}${text}${style.redBright.close}`;
 }
 
 // most @actions toolkit packages have async methods
@@ -17,7 +22,6 @@ async function run() {
 
   var config = {
     user: username,
-    // Password optional, prompted if none given
     password: password,
     host: server,
     port: 21,
@@ -36,6 +40,31 @@ async function run() {
 
   ftpDeploy.on("uploaded", function (data) {
     core.info(blue(`Done uploading ${data.filename}.`));
+  });
+
+  ftpDeploy.on("uploaded", function (data) {
+    const random = Math.floor(Math.random * 10);
+    switch (random) {
+      case 1:
+        core.info(red(`${data.filename}? That sounds dumb.`));
+        break;
+      case 2:
+        core.info(
+          red(
+            `${data.filename}, are you kidding me? Is that the best you come up with?`
+          )
+        );
+        break;
+      case 3:
+        core.info(red(`Who names their file ${data.filename}? Hideous!`));
+        break;
+      case 4:
+        core.info(red(`Who still uses FTP? That's ridiculous.`));
+        break;
+
+      default:
+        break;
+    }
   });
 
   try {
