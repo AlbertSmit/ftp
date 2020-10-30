@@ -29,7 +29,7 @@
     "gradient-string": "^1.2.0"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.24.0",
+    "@vercel/ncc": "^0.24.1",
     "eslint": "^7.4.0",
     "ftp-deploy": "^2.3.8",
     "jest": "^26.1.0"
