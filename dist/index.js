@@ -35,6 +35,18 @@ async function run() {
     forcePasv: true,
   };
 
+  ftpDeploy.on("uploading", function (data) {
+    core.info(
+      blue(
+        `Uploading ${data.totalFilesCount} files, currently done ${data.transferredFileCount}.`
+      )
+    );
+  });
+
+  ftpDeploy.on("uploaded", function (data) {
+    core.info(blue(`Done uploading ${data.filename}.`));
+  });
+
   try {
     core.info(blue("Setting up FTP."));
 
