@@ -1,9 +1,7 @@
+const chalk = require("chalk");
 const core = require("@actions/core");
 const FtpDeploy = require("ftp-deploy");
-
-function blue(text) {
-  return `\u001b[38;5;6m${text}`;
-}
+const gradient = require("gradient-string");
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -30,22 +28,24 @@ async function run() {
 
   ftpDeploy.on("uploading", function (data) {
     core.info(
-      blue(
+      chalk.blue(
         `Uploading ${data.totalFilesCount} files, currently done ${data.transferredFileCount}.`
       )
     );
   });
 
   ftpDeploy.on("uploaded", function (data) {
-    core.info(blue(`Done uploading ${data.filename}.`));
+    core.info(chalk.blue(`Done uploading ${data.filename}.`));
   });
 
   try {
-    core.info(blue("Setting up FTP."));
+    core.info(chalk.blue("Setting up FTP."));
 
     await ftpDeploy
       .deploy(config)
-      .then((res) => core.info(blue("finished:"), res))
+      .then(() =>
+        core.info(gradient("cyan", "pink")("finished uploading your crap."))
+      )
       .catch((err) => core.setFailed(err));
   } catch (error) {
     core.setFailed(error.message);
