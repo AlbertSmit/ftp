@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/albertsmit/ftp#readme",
   "dependencies": {
-    "@actions/core": "^1.2.5",
+    "@actions/core": "^1.9.1",
     "ansi-styles": "^4.3.0",
     "gradient-string": "^1.2.0"
   },
